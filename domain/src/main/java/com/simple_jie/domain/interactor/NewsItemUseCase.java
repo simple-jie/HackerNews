@@ -1,5 +1,6 @@
 package com.simple_jie.domain.interactor;
 
+import com.simple_jie.domain.entities.Item;
 import com.simple_jie.domain.executor.PostExecutionThread;
 import com.simple_jie.domain.executor.ThreadExecutor;
 import com.simple_jie.domain.repository.NewsRepository;
@@ -12,7 +13,7 @@ import rx.Observable;
  * Created by Xingbo.Jie on 25/2/17.
  */
 
-public class NewsItemUseCase extends UseCase {
+public class NewsItemUseCase extends UseCase<Item> {
     NewsRepository repository;
     int id;
     boolean forceRefresh;
@@ -36,7 +37,7 @@ public class NewsItemUseCase extends UseCase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable<Item> buildUseCaseObservable() {
         return repository.getNewItem(id);
     }
 }
