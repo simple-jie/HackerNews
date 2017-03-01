@@ -1,6 +1,7 @@
 package com.simple_jie.domain.interactor;
 
 import com.simple_jie.domain.entities.Category;
+import com.simple_jie.domain.entities.CategoryNews;
 import com.simple_jie.domain.entities.NewsItem;
 import com.simple_jie.domain.executor.PostExecutionThread;
 import com.simple_jie.domain.executor.ThreadExecutor;
@@ -15,10 +16,20 @@ import rx.Observable;
 /**
  * Created by Xingbo.Jie on 25/2/17.
  */
-public class CategoryNewsUseCase extends UseCase<List<NewsItem>> {
+public class CategoryNewsUseCase extends UseCase<CategoryNewsUseCase.Args, CategoryNews> {
 
-    Category category = Category.topstories;
+
     NewsRepository repository;
+
+    public static class Args {
+        boolean forceRefresh;
+        Category category = Category.topstories;
+
+        public Args(boolean forceRefresh, Category category) {
+            this.category = category;
+            this.forceRefresh = forceRefresh;
+        }
+    }
 
     @Inject
     public CategoryNewsUseCase(NewsRepository repository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -26,13 +37,9 @@ public class CategoryNewsUseCase extends UseCase<List<NewsItem>> {
         this.repository = repository;
     }
 
-    public CategoryNewsUseCase setCategory(Category category) {
-        this.category = category;
-        return this;
-    }
 
     @Override
-    protected Observable<List<NewsItem>> buildUseCaseObservable() {
-        return repository.getNews(category);
+    protected Observable<CategoryNews> buildUseCaseObservable(Args args) {
+        return repository.getNews(args.category, args.forceRefresh);
     }
 }

@@ -1,6 +1,7 @@
 package com.simple_jie.domain.interactor;
 
 
+import com.simple_jie.domain.R;
 import com.simple_jie.domain.executor.PostExecutionThread;
 import com.simple_jie.domain.executor.ThreadExecutor;
 
@@ -12,7 +13,7 @@ import rx.subscriptions.Subscriptions;
 /**
  * Created by Xingbo.Jie on 21/6/16.
  */
-public abstract class UseCase<T> {
+public abstract class UseCase<ARGS, RESULT> {
     private final ThreadExecutor mThreadExecutor;
     private final PostExecutionThread mPostExecutionThread;
 
@@ -26,17 +27,17 @@ public abstract class UseCase<T> {
     /**
      * Builds an {@link Observable} which will be used when executing the current {@link UseCase}.
      */
-    protected abstract Observable<T> buildUseCaseObservable();
+    protected abstract Observable<RESULT> buildUseCaseObservable(ARGS args);
 
     /**
      * Executes the current use case.
      *
      * @param useCaseSubscriber The guy who will be listen to the observable build
-     *                          with {@link #buildUseCaseObservable()}.
+     *                          with {@link #buildUseCaseObservable(ARGS args)}.
      */
     @SuppressWarnings("unchecked")
-    public Subscription execute(DefaultSubscriber<T> useCaseSubscriber) {
-        return subscription = buildUseCaseObservable()
+    public Subscription execute(DefaultSubscriber<RESULT> useCaseSubscriber, ARGS args) {
+        return subscription = buildUseCaseObservable(args)
                 .subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler())
                 .subscribe(useCaseSubscriber);

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.simple_jie.domain.entities.Item;
 import com.simple_jie.domain.entities.NewsItem;
@@ -121,13 +122,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                         super.onError(e);
                         requestsMap.remove(news);
                     }
-                }, news.getId(), false);
+                }, new NewsItemUseCase.Args(news.getId(), false));
             }
 
             updateUI(news, postion);
         }
 
-        private void updateUI(final NewsItem news, int postion) {
+        private void updateUI(final NewsItem news, final int postion) {
             final Item item = news.getItem();
             Resources resource = title.getContext().getResources();
             if (item == null) {
@@ -148,6 +149,28 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                 root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (!requestsMap.containsKey(news)) {
+                            useCase.execute(new DefaultSubscriber<Item>() {
+                                @Override
+                                public void onNext(Item item) {
+                                    super.onNext(item);
+                                    news.setItem(item);
+                                    requestsMap.remove(news);
+
+                                    if (news.equals(title.getTag())) {
+                                        Toast.makeText(title.getContext(), R.string.item_updated_hint, Toast.LENGTH_SHORT).show();
+                                        notifyItemChanged(postion);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    super.onError(e);
+                                    requestsMap.remove(news);
+                                }
+                            }, new NewsItemUseCase.Args(news.getId(), true));
+                        }
+
                         if (onItemClickListener != null) {
                             onItemClickListener.onItemClick(news);
                         }

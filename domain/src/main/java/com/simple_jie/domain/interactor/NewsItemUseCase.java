@@ -8,16 +8,23 @@ import com.simple_jie.domain.repository.NewsRepository;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscription;
 
 /**
  * Created by Xingbo.Jie on 25/2/17.
  */
 
-public class NewsItemUseCase extends UseCase<Item> {
+public class NewsItemUseCase extends UseCase<NewsItemUseCase.Args, Item> {
     NewsRepository repository;
-    int id;
-    boolean forceRefresh;
+
+    public static class Args {
+        int id;
+        boolean forceRefresh;
+
+        public Args(int id, boolean forceRefresh) {
+            this.id = id;
+            this.forceRefresh = forceRefresh;
+        }
+    }
 
     @Inject
     public NewsItemUseCase(NewsRepository newsRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -27,18 +34,7 @@ public class NewsItemUseCase extends UseCase<Item> {
 
 
     @Override
-    public Subscription execute(DefaultSubscriber useCaseSubscriber) {
-        throw new IllegalArgumentException("id must be set");
-    }
-
-    public Subscription execute(DefaultSubscriber useCaseSubscriber, int id, boolean forceRefresh) {
-        this.forceRefresh = forceRefresh;
-        this.id = id;
-        return super.execute(useCaseSubscriber);
-    }
-
-    @Override
-    protected Observable<Item> buildUseCaseObservable() {
-        return repository.getNewItem(id, forceRefresh);
+    protected Observable<Item> buildUseCaseObservable(Args args) {
+        return repository.getNewItem(args.id, args.forceRefresh);
     }
 }

@@ -1,10 +1,8 @@
 package com.simple_jie.domain.repository;
 
 import com.simple_jie.domain.entities.Category;
+import com.simple_jie.domain.entities.CategoryNews;
 import com.simple_jie.domain.entities.Item;
-import com.simple_jie.domain.entities.NewsItem;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -14,7 +12,7 @@ import rx.Observable;
 
 public interface NewsRepository {
 
-    Observable<List<NewsItem>> getNews(Category category);
+    Observable<CategoryNews> getNews(Category category, boolean forceRefresh);
 
     Observable<Item> getNewItem(int id, boolean forceRefresh);
 }

@@ -1,7 +1,7 @@
 package com.simple_jie.hackernews.di.modules;
 
 import com.simple_jie.data.cache.NewsCache;
-import com.simple_jie.data.cache.NewsItemCacheImpl;
+import com.simple_jie.data.cache.NewsCacheImpl;
 import com.simple_jie.data.repository.NewsDataRepository;
 import com.simple_jie.domain.repository.NewsRepository;
 
@@ -24,7 +24,7 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    NewsCache provideNewsItemCache(NewsItemCacheImpl newsItemCache) {
+    NewsCache provideNewsItemCache(NewsCacheImpl newsItemCache) {
         return newsItemCache;
     }
 }

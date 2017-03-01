@@ -11,4 +11,5 @@
     <string name="format_points">%dpoints</string>
     <string name="just_now">just now</string>
 
+    <string name="item_updated_hint">Item updated</string>
 </resources>

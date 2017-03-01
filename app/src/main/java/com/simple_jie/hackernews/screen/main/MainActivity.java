@@ -16,7 +16,9 @@ import com.simple_jie.hackernews.di.HasComponent;
 import com.simple_jie.hackernews.di.components.ActivityComponent;
 import com.simple_jie.hackernews.di.modules.ActivityModule;
 import com.simple_jie.hackernews.screen.BaseActivity;
+import com.simple_jie.hackernews.utility.TimeUtil;
 
+import java.sql.Time;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements HasComponent<ActivityComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<ActivityComponent>, RefreshDateChangeListener{
 
     ActivityComponent component;
     @BindView(R.id.toolbar)
@@ -33,10 +35,10 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
     FloatingActionButton fab;
 
     //for test
-    @Inject
-    CategoryNewsUseCase newsUseCase;
-    @Inject
-    NewsItemUseCase itemUseCase;
+//    @Inject
+//    CategoryNewsUseCase newsUseCase;
+//    @Inject
+//    NewsItemUseCase itemUseCase;
     //for test end
 
     @Override
@@ -47,28 +49,28 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         setSupportActionBar(toolbar);
 
         //for test
-        getComponent().inject(this);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                newsUseCase.setCategory(Category.topstories)
-                        .execute(new DefaultSubscriber<List<NewsItem>>() {
-                            @Override
-                            public void onNext(List<NewsItem> newsItems) {
-                                super.onNext(newsItems);
-
-                                if (newsItems.size() > 0) {
-                                    itemUseCase.execute(new DefaultSubscriber<Item>() {
-                                        @Override
-                                        public void onNext(Item item) {
-                                            super.onNext(item);
-                                        }
-                                    }, newsItems.get(0).getId(), true);
-                                }
-                            }
-                        });
-            }
-        });
+//        getComponent().inject(this);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                newsUseCase.execute(new DefaultSubscriber<List<NewsItem>>() {
+//                            @Override
+//                            public void onNext(List<NewsItem> newsItems) {
+//                                super.onNext(newsItems);
+//
+//                                if (newsItems.size() > 0) {
+//                                    itemUseCase.execute(new DefaultSubscriber<Item>() {
+//                                        @Override
+//                                        public void onNext(Item item) {
+//                                            super.onNext(item);
+//                                        }
+//                                    }, newsItems.get(0).getId(), true);
+//                                }
+//                            }
+//                        }
+//                , new CategoryNewsUseCase.Args());
+//            }
+//        });
 
         //for test end.
     }
@@ -81,4 +83,10 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         return component;
     }
 
+    @Override
+    public void onDateChange(long time) {
+        if (toolbar != null) {
+            toolbar.setSubtitle(TimeUtil.getRefreshTime(time));
+        }
+    }
 }

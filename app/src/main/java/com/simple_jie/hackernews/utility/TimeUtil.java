@@ -1,8 +1,13 @@
 package com.simple_jie.hackernews.utility;
 
+
 import android.content.Context;
 
 import com.simple_jie.hackernews.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.lang.String;
 
 /**
  * Created by Xingbo.Jie on 28/2/17.
@@ -32,5 +37,10 @@ public class TimeUtil {
         }
 
         return result;
+    }
+
+    public static String getRefreshTime(long timeInSecond) {
+        SimpleDateFormat format = new SimpleDateFormat();
+        return format.format(new Date(timeInSecond * 1000));
     }
 }

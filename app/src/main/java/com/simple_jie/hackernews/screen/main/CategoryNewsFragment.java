@@ -1,5 +1,6 @@
 package com.simple_jie.hackernews.screen.main;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,13 +13,12 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.simple_jie.domain.entities.Category;
+import com.simple_jie.domain.entities.CategoryNews;
 import com.simple_jie.domain.entities.NewsItem;
 import com.simple_jie.hackernews.R;
 import com.simple_jie.hackernews.di.components.ActivityComponent;
 import com.simple_jie.hackernews.screen.BaseFragment;
 import com.simple_jie.hackernews.widget.DividerItemDecoration;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,6 +41,8 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
     Category category;
     View rootView;
     Unbinder unBinder;
+
+    RefreshDateChangeListener dateChangeListener;
 
 
     @BindView(R.id.news_list)
@@ -67,6 +69,15 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
         }
 
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof RefreshDateChangeListener) {
+            dateChangeListener = (RefreshDateChangeListener) context;
+        }
     }
 
     @Override
@@ -153,14 +164,28 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
     }
 
     @Override
-    public void renderData(List<NewsItem> data) {
-        newsAdapter.setData(data);
-        swipeRefreshLayout.setRefreshing(false);
+    public void renderData(CategoryNews categoryNews) {
+        newsAdapter.setData(categoryNews.getItems());
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        if (dateChangeListener != null) {
+            dateChangeListener.onDateChange(categoryNews.getRefreshTime());
+        }
     }
 
     @Override
     public void showEmpty() {
-        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

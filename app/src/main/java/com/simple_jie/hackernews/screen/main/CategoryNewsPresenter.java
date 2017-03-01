@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.simple_jie.domain.entities.Category;
+import com.simple_jie.domain.entities.CategoryNews;
 import com.simple_jie.domain.entities.NewsItem;
 import com.simple_jie.domain.interactor.CategoryNewsUseCase;
 import com.simple_jie.domain.interactor.DefaultSubscriber;
@@ -40,14 +41,17 @@ public class CategoryNewsPresenter implements CategoryNewsContract.IPresenter {
 
     @Override
     public void refreshData() {
-        loadData();
+        loadData(true);
     }
 
     @Override
     public void loadData() {
+        loadData(false);
+    }
+
+    private void loadData(boolean foreRefresh) {
         view.showLoading();
-        useCase.setCategory(category);
-        useCase.execute(new DefaultSubscriber<List<NewsItem>>() {
+        useCase.execute(new DefaultSubscriber<CategoryNews>() {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
@@ -55,11 +59,11 @@ public class CategoryNewsPresenter implements CategoryNewsContract.IPresenter {
             }
 
             @Override
-            public void onNext(List<NewsItem> newsItems) {
-                super.onNext(newsItems);
-                view.renderData(newsItems);
+            public void onNext(CategoryNews categoryNews) {
+                super.onNext(categoryNews);
+                view.renderData(categoryNews);
             }
-        });
+        }, new CategoryNewsUseCase.Args(foreRefresh, category));
     }
 
     @Override

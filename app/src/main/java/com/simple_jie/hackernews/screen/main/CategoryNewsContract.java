@@ -1,6 +1,7 @@
 package com.simple_jie.hackernews.screen.main;
 
 import com.simple_jie.domain.entities.Category;
+import com.simple_jie.domain.entities.CategoryNews;
 import com.simple_jie.domain.entities.NewsItem;
 import com.simple_jie.hackernews.screen.BasePresenter;
 import com.simple_jie.hackernews.screen.BaseView;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface CategoryNewsContract {
     interface IView extends BaseView<IPresenter> {
         void showLoading();
-        void renderData(List<NewsItem> data);
+        void renderData(CategoryNews data);
         void showEmpty();
     }
 
