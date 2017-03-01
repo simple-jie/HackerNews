@@ -105,6 +105,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
             Item item = news.getItem();
             title.setTag(news);
             if (item == null && !requestsMap.containsKey(news)) {
+                // FIXME: 2/3/17 move to persenter
                 useCase.execute(new DefaultSubscriber<Item>() {
                     @Override
                     public void onNext(Item item) {
@@ -149,6 +150,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                 root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemClick(news);
+                        }
+
+                        // FIXME: 2/3/17 move to persenter
                         if (!requestsMap.containsKey(news)) {
                             useCase.execute(new DefaultSubscriber<Item>() {
                                 @Override
@@ -169,10 +175,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                                     requestsMap.remove(news);
                                 }
                             }, new NewsItemUseCase.Args(news.getId(), true));
-                        }
-
-                        if (onItemClickListener != null) {
-                            onItemClickListener.onItemClick(news);
                         }
                     }
                 });
