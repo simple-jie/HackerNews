@@ -34,6 +34,7 @@ ext {
     calendarviewVersion = '1.4.2'
     rvadapterVersion = '3.0.3'
     gsonVersion =  '2.7'
+    greenDaoVersion = '3.2.0'
 
     dependentLibraries = [
             appcompat:          "com.android.support:appcompat-v7:${appcompatVersion}",
@@ -61,7 +62,8 @@ ext {
             picasso:            "com.squareup.picasso:picasso:${picassoVersion}",
             material_calendarview:  "com.prolificinteractive:material-calendarview:${calendarviewVersion}",
             rvadapter:          "com.zhy:base-rvadapter:${rvadapterVersion}",
-            gson:                "com.google.code.gson:gson:${gsonVersion}"
+            gson:                "com.google.code.gson:gson:${gsonVersion}",
+            greendao:           "org.greenrobot:greendao:${greenDaoVersion}"
     ]
 }
 

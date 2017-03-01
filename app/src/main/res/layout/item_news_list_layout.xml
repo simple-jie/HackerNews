@@ -4,6 +4,7 @@
               android:layout_height="wrap_content"
               android:minHeight="@dimen/item_height_news_list"
               android:orientation="vertical"
+              android:background="@android:color/white"
               android:paddingBottom="@dimen/margin_middle"
               android:paddingLeft="@dimen/margin_nomal"
               android:paddingRight="@dimen/margin_nomal"

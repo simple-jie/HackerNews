@@ -39,6 +39,6 @@ public class NewsItemUseCase extends UseCase<Item> {
 
     @Override
     protected Observable<Item> buildUseCaseObservable() {
-        return repository.getNewItem(id);
+        return repository.getNewItem(id, forceRefresh);
     }
 }

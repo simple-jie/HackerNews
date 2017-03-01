@@ -1,5 +1,6 @@
 package com.simple_jie.data.net;
 
+import com.simple_jie.data.entity.ItemEntity;
 import com.simple_jie.domain.entities.Item;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import rx.Observable;
 
 public interface APIService {
     @GET("item/{id}.json")
-    Observable<Item> item(@Path("id") int id);
+    Observable<ItemEntity> item(@Path("id") int id);
 
     @GET("{category}.json")
     Observable<List<Integer>> news(@Path("category") String category);

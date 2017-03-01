@@ -16,5 +16,5 @@ public interface NewsRepository {
 
     Observable<List<NewsItem>> getNews(Category category);
 
-    Observable<Item> getNewItem(int id);
+    Observable<Item> getNewItem(int id, boolean forceRefresh);
 }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
@@ -29,6 +30,8 @@ dependencies {
     compile dependentLibraries.loggingInterceptor
 
     provided dependentLibraries.javaxAnnotation
+
+    compile dependentLibraries.greendao
 
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
