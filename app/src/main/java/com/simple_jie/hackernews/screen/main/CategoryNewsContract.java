@@ -33,5 +33,9 @@ public interface CategoryNewsContract {
         void loadData();
 
         void showDetail();
+
+        void openUrl(String url);
+
+        void showDetail(NewsItem item);
     }
 }

@@ -8,6 +8,7 @@ import com.simple_jie.domain.repository.NewsRepository;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by Xingbo.Jie on 25/2/17.
@@ -26,14 +27,14 @@ public class NewsItemUseCase extends UseCase<Item> {
 
 
     @Override
-    public void execute(DefaultSubscriber useCaseSubscriber) {
+    public Subscription execute(DefaultSubscriber useCaseSubscriber) {
         throw new IllegalArgumentException("id must be set");
     }
 
-    public void execute(DefaultSubscriber useCaseSubscriber, int id, boolean forceRefresh) {
+    public Subscription execute(DefaultSubscriber useCaseSubscriber, int id, boolean forceRefresh) {
         this.forceRefresh = forceRefresh;
         this.id = id;
-        super.execute(useCaseSubscriber);
+        return super.execute(useCaseSubscriber);
     }
 
     @Override

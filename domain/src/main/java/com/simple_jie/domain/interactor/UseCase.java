@@ -35,8 +35,8 @@ public abstract class UseCase<T> {
      *                          with {@link #buildUseCaseObservable()}.
      */
     @SuppressWarnings("unchecked")
-    public void execute(DefaultSubscriber<T> useCaseSubscriber) {
-        subscription = buildUseCaseObservable()
+    public Subscription execute(DefaultSubscriber<T> useCaseSubscriber) {
+        return subscription = buildUseCaseObservable()
                 .subscribeOn(Schedulers.from(mThreadExecutor))
                 .observeOn(mPostExecutionThread.getScheduler())
                 .subscribe(useCaseSubscriber);

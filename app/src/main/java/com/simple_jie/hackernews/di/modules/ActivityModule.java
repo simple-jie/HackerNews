@@ -1,10 +1,12 @@
 package com.simple_jie.hackernews.di.modules;
 
+import com.simple_jie.domain.entities.NewsItem;
 import com.simple_jie.hackernews.di.PerActivity;
 import com.simple_jie.hackernews.screen.BaseActivity;
 import com.simple_jie.hackernews.screen.ScreenLifecycle;
 import com.simple_jie.hackernews.screen.main.CategoryNewsPresenter;
 import com.simple_jie.hackernews.screen.main.CategoryNewsContract;
+import com.simple_jie.hackernews.screen.main.NewsListAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -37,4 +39,10 @@ public class ActivityModule {
     CategoryNewsContract.IPresenter providerCategoryNewsPresenter(CategoryNewsPresenter presenter) {
         return presenter;
     }
+
+//    @PerActivity
+//    @Provides
+//    NewsListAdapter providerNewsListAdapter(NewsListAdapter adapter) {
+//        return adapter;
+//    }
 }
