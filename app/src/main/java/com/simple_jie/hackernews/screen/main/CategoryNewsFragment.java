@@ -50,6 +50,8 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    CategoryNews data;
+
     public static CategoryNewsFragment newInstance(Category category) {
         CategoryNewsFragment fragment = new CategoryNewsFragment();
         Bundle args = new Bundle();
@@ -139,6 +141,10 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
                 presenter.refreshData();
             }
         });
+
+        if (data != null && dateChangeListener != null) {
+            dateChangeListener.onDateChange(data.getRefreshTime());
+        }
     }
 
 
@@ -165,6 +171,7 @@ public class CategoryNewsFragment extends BaseFragment implements CategoryNewsCo
 
     @Override
     public void renderData(CategoryNews categoryNews) {
+        data = categoryNews;
         newsAdapter.setData(categoryNews.getItems());
         swipeRefreshLayout.post(new Runnable() {
             @Override

@@ -34,6 +34,8 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    long refreshTime = 0;
+
     //for test
 //    @Inject
 //    CategoryNewsUseCase newsUseCase;
@@ -48,6 +50,9 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        if (refreshTime != 0) {
+            toolbar.setSubtitle(TimeUtil.getRefreshTime(refreshTime));
+        }
         //for test
 //        getComponent().inject(this);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +90,7 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
 
     @Override
     public void onDateChange(long time) {
+        refreshTime = time;
         if (toolbar != null) {
             toolbar.setSubtitle(TimeUtil.getRefreshTime(time));
         }
